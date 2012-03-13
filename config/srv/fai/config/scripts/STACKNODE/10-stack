@@ -1,0 +1,16 @@
+#! /bin/bash
+
+# (c) Thomas Lange, 2001-2008, lange@debian.org
+
+error=0 ; trap "error=$((error|1))" ERR
+
+touch /tmp/hellostack
+
+# add a demo user account
+if ! $ROOTCMD getent passwd stack ; then
+    $ROOTCMD adduser --disabled-login --gecos "node user" stack
+#    echo "stack:$ROOTPW" | $ROOTCMD chpasswd --encrypted
+    $ROOTCMD usermod -p "$ROOTPW" stack
+fi
+
+exit $error
