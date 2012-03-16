@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HOSTADDR=192.168.1.4
+HOSTADDR=192.168.1.3
 MASKADDR=255.255.255.0
 GATEWAY=192.168.1.1
 NETWORK=192.168.1.0
@@ -49,6 +49,4 @@ sed -i "s|%HOSTADDR%|$HOSTADDR|g" $CONFDIR/etc/hosts
 sed -i "s|%HOSTNAME%|$HOSTNAME|g" $CONFDIR/etc/hosts
 sudo cp -f $CONFDIR/etc/hosts /srv/fai/nfsroot/live/filesystem.dir/etc/hosts
 # nfs setup
-sudo echo "/srv/fai/config $HOSTIP/24(async,ro,no_subtree_check,no_root_squash)" >> /etc/exports
-
-
+sudo sed -i '$a /srv/fai/config $HOSTIP/24(async,ro,no_subtree_check,no_root_squash)'  /etc/exports
