@@ -1,0 +1,22 @@
+1. change following environment according to local host in setup.sh:
+HOSTADDR=192.168.1.3
+MASKADDR=255.255.255.0
+GATEWAY=192.168.1.1
+NETWORK=192.168.1.0
+
+2. run ./setup.sh, wait for the complete message.
+
+3. run fai-chboot −IFv IPADDR 
+IPADDR is the ip addres of fai client. Which should be specified in /etc/dhcp/dhcpd.conf first.
+
+4. boot the client machine and wait for the auto-installation complete.
+
+After fai finish, run openstack compute 
+git clone git://github.com/zz7a5pe4/x7.git
+
+1. ./mk cache
+2. cd devstack 
+3. ./init.sh
+4. change localrc for compute node setup
+5. run ./setup.sh and wait for complete
+6. login to dashboard

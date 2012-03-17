@@ -50,3 +50,6 @@ sed -i "s|%HOSTNAME%|$HOSTNAME|g" $CONFDIR/etc/hosts
 sudo cp -f $CONFDIR/etc/hosts /srv/fai/nfsroot/live/filesystem.dir/etc/hosts
 # nfs setup
 sudo sed -i '$a /srv/fai/config $HOSTIP/24(async,ro,no_subtree_check,no_root_squash)'  /etc/exports
+
+
+

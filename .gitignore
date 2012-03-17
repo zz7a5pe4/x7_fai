@@ -1,1 +1,5 @@
 *~
+approx.conf
+tftpd-hpa
+dhcpd.conf
+sources.list
