@@ -9,7 +9,7 @@ TOPDIR=`pwd`
 CONFDIR=$TOPDIR/config
 
 # install package
-sudo apt-get install fai-quickstart
+sudo apt-get install fai-quickstart approx
 
 # dhcp config
 cp -f $CONFDIR/etc/dhcp/dhcpd.conf.template $CONFDIR/etc/dhcp/dhcpd.conf
