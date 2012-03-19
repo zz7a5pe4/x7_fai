@@ -1,0 +1,23 @@
+x7 fai 测试流程：
+1. ubuntu 11.10 desktop/server
+2. 安装git，下载代码：
+sudo apt-get update
+sudo apt-get install git 
+git clone https://zz7a5pe4@github.com/zz7a5pe4/x7_fai.git
+3. 修改配置文件
+cd x7_fai
+gedit setup.sh，修改下列地址：
+HOSTADDR=192.168.1.3	#运行FAI service的主机地址
+MASKADDR=255.255.255.0	#当前网络的子网掩码
+GATEWAY=192.168.1.1	#网关地址
+NETWORK=192.168.1.0	#网络地址
+
+修改文件./config/etc/dhcp/dhcpd.conf
+host cloudnode-1 {hardware ethernet 5c:26:0a:33:0d:71;fixed-address 192.168.1.4;}
+# 改成想要由fai进行安装的机器的mac地址，期望的ip地址。
+# 主机名必须由cloudnode开头
+4. 执行安装/配置脚本:
+./start.sh
+# 运行之后，回出现“   ...done.
+FAI setup finished.”字样，表示fai的安装和配置完成
+5. 
