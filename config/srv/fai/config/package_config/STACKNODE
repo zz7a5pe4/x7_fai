@@ -78,7 +78,6 @@ dnsmasq-utils
 kpartx
 parted
 iputils-arping
-mysql-server
 python-mysqldb
 python-xattr
 python-lxml
@@ -92,7 +91,6 @@ kvm
 libvirt-bin
 vlan
 curl
-rabbitmq-server
 socat
 python-mox
 python-paste

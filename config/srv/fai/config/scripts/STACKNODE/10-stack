@@ -4,13 +4,14 @@
 
 error=0 ; trap "error=$((error|1))" ERR
 
-touch /tmp/hellostack
-
 # add a demo user account
 if ! $ROOTCMD getent passwd stack ; then
     $ROOTCMD adduser --disabled-login --gecos "node user" stack
 #    echo "stack:$ROOTPW" | $ROOTCMD chpasswd --encrypted
     $ROOTCMD usermod -p "$ROOTPW" stack
 fi
+
+git clone git://github.com/zz7a5pe4/x7.git /home/stack
+
 
 exit $error
