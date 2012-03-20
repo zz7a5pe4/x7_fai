@@ -1,9 +1,14 @@
 #!/bin/bash
 
-HOSTADDR=192.168.1.3
-MASKADDR=255.255.255.0
-GATEWAY=192.168.1.1
-NETWORK=192.168.1.0
+INTERFACE=eth3
+
+source ./addrc
+
+echo ${HOSTADDR:?"empty host addr"}
+echo ${MASKADDR:?"empty mask addr"}
+echo ${GATEWAY:?"empty gateway"}
+echo ${NETWORK:?"empty network"}
+
 
 TOPDIR=`pwd`
 CONFDIR=$TOPDIR/config
@@ -46,6 +51,8 @@ cp -f $CONFDIR/etc/default/tftpd-hpa /etc/default/tftpd-hpa
 cp -f $CONFDIR/etc/approx/approx.conf.template $CONFDIR/etc/approx/approx.conf
 cp -f $CONFDIR/etc/fai/apt/sources.list.template $CONFDIR/etc/fai/apt/sources.list
 sed -i "s|%HOSTADDR%|$HOSTADDR|g" $CONFDIR/etc/fai/apt/sources.list
+mv /etc/apt/sources.list /etc/apt/sources.list.backup
+cp -f $CONFDIR/etc/fai/apt/sources.list /etc/apt/sources.list 
 cp -f $CONFDIR/etc/approx/approx.conf /etc/approx/approx.conf
 
 # fai config
@@ -54,7 +61,8 @@ cp -rf $CONFDIR/srv/fai/config /srv/fai/config
 cp -rf $CONFDIR/etc/fai /etc/fai
 
 # fai nfs creation
-fai-setup -v
+export SERVERINTERFACE=$INTERFACE
+#fai-setup -v
 
 # hosts config
 cp $CONFDIR/etc/hosts.template $CONFDIR/etc/hosts
@@ -62,7 +70,14 @@ sed -i "s|%HOSTADDR%|$HOSTADDR|g" $CONFDIR/etc/hosts
 sed -i "s|%HOSTNAME%|$HOSTNAME|g" $CONFDIR/etc/hosts
 cp -f $CONFDIR/etc/hosts /srv/fai/nfsroot/live/filesystem.dir/etc/hosts
 # nfs setup
-echo "/srv/fai/config $HOSTADDR/24(async,ro,no_subtree_check,no_root_squash)" >>  /etc/exports
+echo $HOSTADDR
+grep "/srv/fai/config $HOSTADDR/24" /etc/exports > /dev/null
+if [ "$?" -ne "0" ]; then
+    echo "/srv/fai/config $HOSTADDR/24(async,ro,no_subtree_check,no_root_squash)" >>  /etc/exports
+else
+    echo ""
+fi
+
 /etc/init.d/nfs-kernel-server restart
 chmod +r /srv/tftp/fai/*
 

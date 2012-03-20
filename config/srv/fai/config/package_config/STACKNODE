@@ -27,7 +27,6 @@ python-wsgiref
 python-pastedeploy
 python-xattr
 python-iso8601
-apache2
 libapache2-mod-wsgi
 python-dateutil
 python-paste
