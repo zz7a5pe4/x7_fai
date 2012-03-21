@@ -6,7 +6,7 @@ rsync lftp less dump reiserfsprogs e2fsprogs usbutils
 psmisc pciutils hdparm smartmontools parted mdadm lvm2
 dnsutils ntpdate dosfstools jove xfsprogs xfsdump
 procinfo dialog discover console-setup
-console-tools console-common
+console-tools console-common git
 iproute udev subversion liblinux-lvm-perl
 
 # needed for the simple examples

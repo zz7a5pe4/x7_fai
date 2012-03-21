@@ -39,12 +39,12 @@ deb-src http://%HOSTADDR%:9999/cnubuntu/  oneiric-updates multiverse
 deb http://%HOSTADDR%:9999/cnubuntu/  oneiric-backports main restricted universe multiverse
 deb-src http://%HOSTADDR%:9999/cnubuntu/  oneiric-backports main restricted universe multiverse
 
-deb http://%HOSTADDR%:9999/security/  oneiric-security main restricted
-deb-src http://%HOSTADDR%:9999/security/  oneiric-security main restricted
-deb http://%HOSTADDR%:9999/security/  oneiric-security universe
-deb-src http://%HOSTADDR%:9999/security/  oneiric-security universe
-deb http://%HOSTADDR%:9999/security/  oneiric-security multiverse
-deb-src http://%HOSTADDR%:9999/security/  oneiric-security multiverse
+#deb http://%HOSTADDR%:9999/security/  oneiric-security main restricted
+#deb-src http://%HOSTADDR%:9999/security/  oneiric-security main restricted
+#deb http://%HOSTADDR%:9999/security/  oneiric-security universe
+#deb-src http://%HOSTADDR%:9999/security/  oneiric-security universe
+#deb http://%HOSTADDR%:9999/security/  oneiric-security multiverse
+#deb-src http://%HOSTADDR%:9999/security/  oneiric-security multiverse
 
 ## Uncomment the following two lines to add software from Canonical's
 ## 'partner' repository.
@@ -55,5 +55,5 @@ deb-src http://%HOSTADDR%:9999/security/  oneiric-security multiverse
 
 ## This software is not part of Ubuntu, but is offered by third-party
 ## developers who want to ship their latest software.
-deb http://%HOSTADDR%:9999/extra/ oneiric main
-deb-src http://%HOSTADDR%:9999/extra/ oneiric main
+#deb http://%HOSTADDR%:9999/extra/ oneiric main
+#deb-src http://%HOSTADDR%:9999/extra/ oneiric main

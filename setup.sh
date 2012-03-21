@@ -54,6 +54,7 @@ sed -i "s|%HOSTADDR%|$HOSTADDR|g" $CONFDIR/etc/fai/apt/sources.list
 mv /etc/apt/sources.list /etc/apt/sources.list.backup
 cp -f $CONFDIR/etc/fai/apt/sources.list /etc/apt/sources.list 
 cp -f $CONFDIR/etc/approx/approx.conf /etc/approx/approx.conf
+apt-get update
 
 # fai config
 rm -rf /srv/fai/config /etc/fai
@@ -62,7 +63,7 @@ cp -rf $CONFDIR/etc/fai /etc/fai
 
 # fai nfs creation
 export SERVERINTERFACE=$INTERFACE
-#fai-setup -v
+fai-setup -v
 
 # hosts config
 cp $CONFDIR/etc/hosts.template $CONFDIR/etc/hosts
