@@ -43,7 +43,7 @@ cp -f $CONFDIR/etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf
 # tftp config
 cp -f $CONFDIR/etc/default/tftpd-hpa.template  $CONFDIR/etc/default/tftpd-hpa
 cp -f $CONFDIR/etc/default/tftpd-hpa /etc/default/tftpd-hpa
-/etc/init.d/tftpd-hpa restart
+
 
 
 
@@ -80,6 +80,16 @@ else
 fi
 
 /etc/init.d/nfs-kernel-server restart
-chmod +r /srv/tftp/fai/*
+mkdir -p /srv/instances
+chmod 777 /srv/instances
+grep "/srv/instances $HOSTADDR/24" /etc/exports > /dev/null
+if [ "$?" -ne "0" ]; then
+    echo "/srv/instances $HOSTADDR/24(async,rw,no_subtree_check,no_root_squash)" >>  /etc/exports
+else
+    echo ""
+fi
 
-
+faimond -d -b -T
+# chboot, chmod, tftp-restart
+# chmod +r /srv/tftp/fai/*
+# /etc/init.d/tftpd-hpa restart
