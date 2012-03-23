@@ -9,7 +9,9 @@ echo ${MASKADDR:?"empty mask addr"}
 echo ${GATEWAY:?"empty gateway"}
 echo ${NETWORK:?"empty network"}
 
-
+if [ -z "$MYID" ]; then
+    export MYID=`whoami`
+fi 
 TOPDIR=`pwd`
 CONFDIR=$TOPDIR/config
 
@@ -64,6 +66,8 @@ cp -rf $CONFDIR/etc/fai /etc/fai
 # fai nfs creation
 export SERVERINTERFACE=$INTERFACE
 fai-setup -v
+#ssh-keygen -P "" -f /home/$MYID/.ssh/id_rsa
+cp /home/$MYID/.ssh/id_rsa.pub /srv/fai/nfsroot/live/filesystem.dir/root/id_rsa.pub
 
 # hosts config
 cp $CONFDIR/etc/hosts.template $CONFDIR/etc/hosts
@@ -89,7 +93,10 @@ else
     echo ""
 fi
 
+chmod -R +r /srv/tftp/fai/*
+
 faimond -d -b -T
 # chboot, chmod, tftp-restart
 # chmod +r /srv/tftp/fai/*
 # /etc/init.d/tftpd-hpa restart
+# fai-chboot -f verbose,sshd,createvt,reboot -I -v 
