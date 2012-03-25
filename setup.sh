@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INTERFACE=eth3
+export INTERFACE=$1
 
 source ./addrc
 
@@ -19,19 +19,29 @@ chk_root () {
 
   if [ ! $( id -u ) -eq 0 ]; then
     echo "Please enter root's password."
-    exec sudo su -c "${0} ${CMDLN_ARGS}" # Call this prog as root
+    exec sudo su -c "${0} ${1}" # Call this prog as root
     exit ${?}  # sice we're 'execing' above, we wont reach this exit
                # unless something goes wrong.
   fi
 
 }
 
-chk_root
+update () {
+  ./notify_status.py "$1" "$2"
+  echo $1 $2
+}
+
+
+chk_root $1
 
 # install package
+update log "install fai"
+update prog 10
 apt-get install -y --assume-yes fai-quickstart approx
 
+
 # dhcp config
+update log "setup dhcp"
 cp -f $CONFDIR/etc/dhcp/dhcpd.conf.template $CONFDIR/etc/dhcp/dhcpd.conf
 sed -i "s|%NETADDR%|$NETWORK|g" $CONFDIR/etc/dhcp/dhcpd.conf
 sed -i "s|%MASKADDR%|$MASKADDR|g" $CONFDIR/etc/dhcp/dhcpd.conf
@@ -40,9 +50,10 @@ sed -i "s|%HOSTADDR%|$HOSTADDR|g" $CONFDIR/etc/dhcp/dhcpd.conf
 cp -f $CONFDIR/etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf
 /etc/init.d/isc-dhcp-server restart
 # dns setup/config
-
+update prog 20
 
 # tftp config
+update log "setup tftp"
 cp -f $CONFDIR/etc/default/tftpd-hpa.template  $CONFDIR/etc/default/tftpd-hpa
 cp -f $CONFDIR/etc/default/tftpd-hpa /etc/default/tftpd-hpa
 
@@ -50,6 +61,7 @@ cp -f $CONFDIR/etc/default/tftpd-hpa /etc/default/tftpd-hpa
 
 
 # approx setup
+update log "setup apt rep"
 cp -f $CONFDIR/etc/approx/approx.conf.template $CONFDIR/etc/approx/approx.conf
 cp -f $CONFDIR/etc/fai/apt/sources.list.template $CONFDIR/etc/fai/apt/sources.list
 sed -i "s|%HOSTADDR%|$HOSTADDR|g" $CONFDIR/etc/fai/apt/sources.list
@@ -63,9 +75,11 @@ rm -rf /srv/fai/config /etc/fai
 cp -rf $CONFDIR/srv/fai/config /srv/fai/config
 cp -rf $CONFDIR/etc/fai /etc/fai
 
+update prog 30
 # fai nfs creation
+update log "setup nfs root"
 export SERVERINTERFACE=$INTERFACE
-fai-setup -v
+#fai-setup -v
 #ssh-keygen -P "" -f /home/$MYID/.ssh/id_rsa
 cp /home/$MYID/.ssh/id_rsa.pub /srv/fai/nfsroot/live/filesystem.dir/root/id_rsa.pub
 
@@ -83,6 +97,7 @@ else
     echo ""
 fi
 
+update log "setup nfs"
 /etc/init.d/nfs-kernel-server restart
 mkdir -p /srv/instances
 chmod 777 /srv/instances
@@ -95,8 +110,10 @@ fi
 
 chmod -R +r /srv/tftp/fai/*
 
+update log "start listen monitor daemon"
 faimond -d -b -T
 # chboot, chmod, tftp-restart
 # chmod +r /srv/tftp/fai/*
 # /etc/init.d/tftpd-hpa restart
 # fai-chboot -f verbose,sshd,createvt,reboot -I -v 
+update prog 40
