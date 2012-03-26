@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 export INTERFACE=$1
 
@@ -12,6 +12,7 @@ echo ${NETWORK:?"empty network"}
 if [ -z "$MYID" ]; then
     export MYID=`whoami`
 fi 
+echo "$MYID"
 TOPDIR=`pwd`
 CONFDIR=$TOPDIR/config
 
@@ -19,7 +20,7 @@ chk_root () {
 
   if [ ! $( id -u ) -eq 0 ]; then
     echo "Please enter root's password."
-    exec sudo su -c "${0} ${1}" # Call this prog as root
+    exec sudo -E su -m -c "${0} ${1}" # Call this prog as root
     exit ${?}  # sice we're 'execing' above, we wont reach this exit
                # unless something goes wrong.
   fi
@@ -37,7 +38,7 @@ chk_root $1
 # install package
 update log "install fai"
 update prog 10
-apt-get install -y --assume-yes fai-quickstart approx
+apt-get install -y --assume-yes fai-quickstart
 
 
 # dhcp config
@@ -57,18 +58,9 @@ update log "setup tftp"
 cp -f $CONFDIR/etc/default/tftpd-hpa.template  $CONFDIR/etc/default/tftpd-hpa
 cp -f $CONFDIR/etc/default/tftpd-hpa /etc/default/tftpd-hpa
 
-
-
-
-# approx setup
-update log "setup apt rep"
-cp -f $CONFDIR/etc/approx/approx.conf.template $CONFDIR/etc/approx/approx.conf
 cp -f $CONFDIR/etc/fai/apt/sources.list.template $CONFDIR/etc/fai/apt/sources.list
 sed -i "s|%HOSTADDR%|$HOSTADDR|g" $CONFDIR/etc/fai/apt/sources.list
-mv /etc/apt/sources.list /etc/apt/sources.list.backup
-cp -f $CONFDIR/etc/fai/apt/sources.list /etc/apt/sources.list 
-cp -f $CONFDIR/etc/approx/approx.conf /etc/approx/approx.conf
-apt-get update
+
 
 # fai config
 rm -rf /srv/fai/config /etc/fai
@@ -79,7 +71,7 @@ update prog 30
 # fai nfs creation
 update log "setup nfs root"
 export SERVERINTERFACE=$INTERFACE
-#fai-setup -v
+fai-setup -v
 #ssh-keygen -P "" -f /home/$MYID/.ssh/id_rsa
 cp /home/$MYID/.ssh/id_rsa.pub /srv/fai/nfsroot/live/filesystem.dir/root/id_rsa.pub
 
