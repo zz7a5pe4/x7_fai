@@ -73,7 +73,7 @@ update log "setup nfs root"
 export SERVERINTERFACE=$INTERFACE
 fai-setup -v
 #ssh-keygen -P "" -f /home/$MYID/.ssh/id_rsa
-cp /home/$MYID/.ssh/id_rsa.pub /srv/fai/nfsroot/live/filesystem.dir/root/id_rsa.pub
+cp -f /home/$MYID/.ssh/id_rsa.pub /srv/fai/nfsroot/live/filesystem.dir/root/id_rsa.pub
 
 # hosts config
 cp $CONFDIR/etc/hosts.template $CONFDIR/etc/hosts
@@ -82,7 +82,7 @@ sed -i "s|%HOSTNAME%|$HOSTNAME|g" $CONFDIR/etc/hosts
 cp -f $CONFDIR/etc/hosts /srv/fai/nfsroot/live/filesystem.dir/etc/hosts
 # nfs setup
 echo $HOSTADDR
-grep "/srv/fai/config $HOSTADDR/24" /etc/exports > /dev/null
+grep "/srv/fai/config $HOSTADDR/24" /etc/exports > /dev/null && true
 if [ "$?" -ne "0" ]; then
     echo "/srv/fai/config $HOSTADDR/24(async,ro,no_subtree_check,no_root_squash)" >>  /etc/exports
 else
@@ -93,7 +93,7 @@ update log "setup nfs"
 /etc/init.d/nfs-kernel-server restart
 mkdir -p /srv/instances
 chmod 777 /srv/instances
-grep "/srv/instances $HOSTADDR/24" /etc/exports > /dev/null
+grep "/srv/instances $HOSTADDR/24" /etc/exports > /dev/null  && true
 if [ "$?" -ne "0" ]; then
     echo "/srv/instances $HOSTADDR/24(async,rw,no_subtree_check,no_root_squash)" >>  /etc/exports
 else
@@ -103,6 +103,7 @@ fi
 chmod -R +r /srv/tftp/fai/*
 
 update log "start listen monitor daemon"
+killall faimond
 faimond -d -b -T
 # chboot, chmod, tftp-restart
 # chmod +r /srv/tftp/fai/*
