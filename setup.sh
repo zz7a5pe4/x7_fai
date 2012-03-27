@@ -96,6 +96,7 @@ chmod 777 /srv/instances
 grep "/srv/instances $HOSTADDR/24" /etc/exports > /dev/null  && true
 if [ "$?" -ne "0" ]; then
     echo "/srv/instances $HOSTADDR/24(async,rw,no_subtree_check,no_root_squash)" >>  /etc/exports
+    echo "/srv/instances 127.0.0.1(async,rw,no_subtree_check,no_root_squash)" >>  /etc/exports
 else
     echo ""
 fi
