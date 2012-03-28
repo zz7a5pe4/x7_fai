@@ -90,7 +90,7 @@ else
 fi
 
 update log "setup nfs"
-/etc/init.d/nfs-kernel-server restart
+
 mkdir -p /srv/instances
 chmod 777 /srv/instances
 grep "/srv/instances $HOSTADDR/24" /etc/exports > /dev/null  && true
@@ -100,7 +100,7 @@ if [ "$?" -ne "0" ]; then
 else
     echo ""
 fi
-
+/etc/init.d/nfs-kernel-server restart
 chmod -R +r /srv/tftp/fai/*
 
 update log "start listen monitor daemon"

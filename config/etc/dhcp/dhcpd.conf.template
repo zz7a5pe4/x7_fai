@@ -16,4 +16,4 @@ subnet %NETADDR% netmask %MASKADDR% {
 }
 
 # perl -ane ' {print "host atom {hardware ethernet $1;fixed-address atom}";}'
-host cloudnode-1 {hardware ethernet 5c:26:0a:33:0d:71;fixed-address 192.168.1.4;}
+#host cloudnode-1 {hardware ethernet 5c:26:0a:33:0d:71;fixed-address 192.168.1.4;}
