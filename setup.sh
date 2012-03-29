@@ -111,3 +111,4 @@ faimond -d -b -T
 # /etc/init.d/tftpd-hpa restart
 # fai-chboot -f verbose,sshd,createvt,reboot -I -v 
 update prog 40
+exit 0
