@@ -14,7 +14,7 @@ fi
 git clone git://github.com/zz7a5pe4/x7.git /target/home/stack/x7
 echo "stack ALL=(ALL) NOPASSWD: ALL" >> /target/etc/sudoers
 
-mkdir -p /home/stack/.ssh
+mkdir -p /tarket/home/stack/.ssh
 cp -f /root/id_rsa.pub /target/home/stack/.ssh/authorized_keys
 chown -R 1000:1000 /target/home/stack
 

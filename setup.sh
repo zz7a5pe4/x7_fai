@@ -104,8 +104,8 @@ fi
 chmod -R +r /srv/tftp/fai/*
 
 update log "start listen monitor daemon"
-killall faimond || true
-faimond -d -b -T
+#killall faimond || true
+#faimond -d -b -T
 # chboot, chmod, tftp-restart
 # chmod +r /srv/tftp/fai/*
 # /etc/init.d/tftpd-hpa restart
