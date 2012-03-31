@@ -71,7 +71,7 @@ update prog 30
 # fai nfs creation
 update log "setup nfs root"
 export SERVERINTERFACE=$INTERFACE
-fai-setup -v
+#fai-setup -v
 #ssh-keygen -P "" -f /home/$MYID/.ssh/id_rsa
 cp -f /home/$MYID/.ssh/id_rsa.pub /srv/fai/nfsroot/live/filesystem.dir/root/id_rsa.pub
 
