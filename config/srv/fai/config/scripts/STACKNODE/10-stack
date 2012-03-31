@@ -21,4 +21,8 @@ cp -rf /root/pip /target/home/stack/x7/cache/
 cp -rf /root/stack /target/home/stack/x7/cache/
 chown -R 1000:1000 /target/home/stack
 
+HOSTADDR=$(ifconfig | grep -A1 eth0 | grep 'inet addr:' |cut -d: -f2 | awk '{ print $1}')
+
+cp -f /root/interface.$HOSTADDR /target/etc/network/interfaces
+
 exit $error
