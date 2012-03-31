@@ -16,6 +16,9 @@ echo "stack ALL=(ALL) NOPASSWD: ALL" >> /target/etc/sudoers
 
 mkdir -p /target/home/stack/.ssh
 cp -f /root/id_rsa.pub /target/home/stack/.ssh/authorized_keys
+mkdir -p /target/home/stack/x7/cache
+cp -rf /root/pip /target/home/stack/x7/cache/
+cp -rf /root/stack /target/home/stack/x7/cache/
 chown -R 1000:1000 /target/home/stack
 
 exit $error
